@@ -1,0 +1,1289 @@
+using System;  
+
+  
+
+using System.Collections.Generic;  
+
+  
+
+using System.Linq;  
+
+  
+
+namespace GroupDictionaryProject  
+
+  
+
+{  
+
+  
+
+    internal static class Program  
+
+  
+
+    {  
+
+  
+
+        /// Shared dictionary of color categories and their values.  
+
+  
+
+        /// This dictionary is used by all other sections (B, C, and D).  
+
+  
+
+        private static readonly Dictionary<string, List<string>> _dict =  
+
+  
+
+            new Dictionary<string,  
+
+  
+
+List<string>>(StringComparer.OrdinalIgnoreCase);  
+
+  
+
+   
+
+  
+
+        /// Controls when the main loop exits.  
+
+  
+
+        private static bool _exit;  
+
+  
+
+          
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Entry point of the application.  
+
+  
+
+        /// Displays a menu and directs user input for section routing.  
+
+  
+
+        /// </summary>  
+
+  
+
+        private static void Main()  
+
+  
+
+        {  
+
+  
+
+            Console.ForegroundColor = ConsoleColor.Cyan;  
+
+  
+
+            Console.WriteLine("Section A: Application Shell & Menu Loaded");  
+
+  
+
+            Console.ResetColor();  
+
+  
+
+            SeedSampleData();  
+
+  
+
+              
+
+  
+
+            while (!_exit)  
+
+  
+
+            {  
+
+  
+
+                Console.Clear();  
+
+  
+
+                Console.WriteLine("=== Group Dictionary Project: COLORS ===");  
+
+  
+
+                Console.WriteLine("[1] Populate the Dictionary (Section B)");  
+
+  
+
+                Console.WriteLine("[2] Display Dictionary Contents (Section D)");  
+
+  
+
+                Console.WriteLine("[3] Remove a Key (Section C)");  
+
+  
+
+                Console.WriteLine("[4] Add a New Key and Value (Section C)");  
+
+  
+
+                Console.WriteLine("[5] Add a Value to an Existing Key (Section C)");  
+
+  
+
+                Console.WriteLine("[6] Sort the Keys (View Sorted) (Section D)");  
+
+  
+
+                Console.WriteLine("[0] Exit");  
+
+  
+
+                Console.Write("\nSelect an option: ");  
+
+  
+
+                  
+
+  
+
+                var input = Console.ReadLine();  
+
+  
+
+                Console.WriteLine();  
+
+  
+
+                  
+
+  
+
+                Console.ForegroundColor = ConsoleColor.Yellow;  
+
+  
+
+                Console.WriteLine($"[Section A] Dispatching to correct module for choice: {input}");  
+
+  
+
+                Console.ResetColor();  
+
+  
+
+                  
+
+  
+
+                switch (input)  
+
+  
+
+                {  
+
+  
+
+                    case "1":  
+
+  
+
+                        SectionB.PopulateDictionary(_dict);  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    case "2":  
+
+  
+
+                        SectionD.DisplayMenu(_dict);  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    case "3":  
+
+  
+
+                        SectionC.RemoveKey(_dict);  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    case "4":  
+
+  
+
+                        SectionC.AddNewKeyAndValue(_dict);  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    case "5":  
+
+  
+
+                        SectionC.AddValueToExistingKey(_dict);  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    case "6":  
+
+  
+
+                        SectionD.ShowSortedKeys(_dict);  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    case "0":  
+
+  
+
+                        _exit = true;  
+
+  
+
+                        Console.WriteLine("Exiting program... (handled by Section A)");  
+
+  
+
+                        break;  
+
+  
+
+                          
+
+  
+
+                    default:  
+
+  
+
+                        Console.WriteLine("Invalid option. Please try again.");  
+
+  
+
+                        Pause();  
+
+  
+
+                        break;  
+
+  
+
+                }  
+
+  
+
+            }  
+
+  
+
+        }  
+
+  
+
+          
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Execution pauses so user can read message.  
+
+  
+
+        /// </summary>  
+
+  
+
+        private static void Pause()  
+
+  
+
+        {  
+
+  
+
+            Console.WriteLine();  
+
+  
+
+            Console.Write("Press ENTER to continue...");  
+
+  
+
+            Console.ReadLine();  
+
+  
+
+        }  
+
+  
+
+          
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Loads example color categories into dictionary.  
+
+  
+
+        /// Demonstrates that data is shared across sections.  
+
+  
+
+        /// </summary>  
+
+  
+
+        private static void SeedSampleData()  
+
+  
+
+        {  
+
+  
+
+            if (_dict.Count > 0) return;  
+
+  
+
+              
+
+  
+
+            _dict["Warm"] = new List<string> { "Red", "Orange", "Yellow" };  
+
+  
+
+            _dict["Cool"] = new List<string> { "Blue", "Green", "Purple" };  
+
+  
+
+            _dict["Neutral"] = new List<string> { "White", "Gray", "Black" };  
+
+  
+
+              
+
+  
+
+            Console.WriteLine("\n[Section A] Sample color data loaded into the dictionary.\n");  
+
+  
+
+        }  
+
+  
+
+    }  
+
+  
+
+    internal static class SectionB  
+
+  
+
+    {  
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Allows the user to populate the dictionary with multiple categories.  
+
+  
+
+        /// </summary>  
+
+  
+
+        public static void PopulateDictionary(Dictionary<string, List<string>> dict)  
+
+  
+
+        {  
+
+  
+
+            Console.WriteLine("=== Section B: Populate Dictionary ===");  
+
+  
+
+   
+
+  
+
+            while (true)  
+
+  
+
+            {  
+
+  
+
+                Console.Write("Enter a color category (or 'done' to finish): ");  
+
+  
+
+                string key = Console.ReadLine();  
+
+  
+
+   
+
+  
+
+                if (key.Equals("done", StringComparison.OrdinalIgnoreCase))  
+
+  
+
+                    break;  
+
+  
+
+   
+
+  
+
+                if (!dict.ContainsKey(key))  
+
+  
+
+                {  
+
+  
+
+                    dict[key] = new List<string>();  
+
+  
+
+                    Console.WriteLine($"Created new category '{key}'.");  
+
+  
+
+                }  
+
+  
+
+   
+
+  
+
+                Console.Write($"Enter colors for {key} (comma-separated): ");  
+
+  
+
+                string[] colors = Console.ReadLine().Split(',');  
+
+  
+
+   
+
+  
+
+                foreach (string color in colors)  
+
+  
+
+                {  
+
+  
+
+                    string trimmed = color.Trim();  
+
+  
+
+                    if (!string.IsNullOrEmpty(trimmed))  
+
+  
+
+                        dict[key].Add(trimmed);  
+
+  
+
+                }  
+
+  
+
+   
+
+  
+
+                Console.WriteLine($"Added {colors.Length} color(s) to category '{key}'.\n");  
+
+  
+
+            }  
+
+  
+
+   
+
+  
+
+            Console.WriteLine("[Section B] Dictionary population complete!");  
+
+  
+
+        }  
+
+  
+
+    }  
+
+  
+
+    internal static class SectionC  
+
+  
+
+    {  
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Removes a category (key) from the dictionary.  
+
+  
+
+        /// </summary>  
+
+  
+
+        public static void RemoveKey(Dictionary<string, List<string>> dict)  
+
+  
+
+        {  
+
+  
+
+            Console.WriteLine("=== Section C: Remove a Key ===");  
+
+  
+
+  
+
+  
+
+            if (dict.Count == 0)  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine("The dictionary is empty. Nothing to remove.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            Console.Write("Enter the category name to remove: ");  
+
+  
+
+            string key = Console.ReadLine()?.Trim() ?? string.Empty;  
+
+  
+
+  
+
+  
+
+            if (string.IsNullOrWhiteSpace(key))  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine("No category provided.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            if (!dict.ContainsKey(key))  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine($"Category '{key}' was not found.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            Console.Write($"Are you sure you want to remove '{key}' and all its values? (y/n): ");  
+
+  
+
+            var confirm = Console.ReadLine();  
+
+  
+
+            if (!string.Equals(confirm, "y", StringComparison.OrdinalIgnoreCase))  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine("Removal canceled.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            dict.Remove(key);  
+
+  
+
+            Console.WriteLine($"Category '{key}' removed.");  
+
+  
+
+        }  
+
+  
+
+  
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Adds a brand-new category (key) and optionally a first value.  
+
+  
+
+        /// </summary>  
+
+  
+
+        public static void AddNewKeyAndValue(Dictionary<string, List<string>> dict)  
+
+  
+
+        {  
+
+  
+
+            Console.WriteLine("=== Section C: Add a New Key and Value ===");  
+
+  
+
+  
+
+  
+
+            Console.Write("Enter new category name: ");  
+
+  
+
+            string key = Console.ReadLine()?.Trim() ?? string.Empty;  
+
+  
+
+  
+
+  
+
+            if (string.IsNullOrWhiteSpace(key))  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine("Invalid category name.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            if (dict.ContainsKey(key))  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine($"Category '{key}' already exists. Use option [5] to add values.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            Console.Write($"Enter the first color value for '{key}' (or press ENTER to skip): ");  
+
+  
+
+            string firstValue = Console.ReadLine()?.Trim() ?? string.Empty;  
+
+  
+
+  
+
+  
+
+            var values = new List<string>();  
+
+  
+
+            if (!string.IsNullOrWhiteSpace(firstValue))  
+
+  
+
+            {  
+
+  
+
+                values.Add(firstValue);  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            dict[key] = values;  
+
+  
+
+            Console.WriteLine(values.Count == 0  
+
+  
+
+                ? $"Created category '{key}' with no initial values."  
+
+  
+
+                : $"Created category '{key}' with 1 value ('{firstValue}').");  
+
+  
+
+        }  
+
+  
+
+  
+
+  
+
+        /// <summary>  
+
+  
+
+        /// Adds one or more values to an existing category (key).  
+
+  
+
+        /// </summary>  
+
+  
+
+        public static void AddValueToExistingKey(Dictionary<string, List<string>> dict)  
+
+  
+
+        {  
+
+  
+
+            Console.WriteLine("=== Section C: Add a Value to an Existing Key ===");  
+
+  
+
+  
+
+  
+
+            if (dict.Count == 0)  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine("The dictionary is empty. Add a category first (option [4]).");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            Console.Write("Enter existing category name: ");  
+
+  
+
+            string key = Console.ReadLine()?.Trim() ?? string.Empty;  
+
+  
+
+  
+
+  
+
+            if (!dict.TryGetValue(key, out var list))  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine($"Category '{key}' was not found.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            Console.Write($"Enter value(s) to add to '{key}' (comma-separated): ");  
+
+  
+
+            string raw = Console.ReadLine() ?? string.Empty;  
+
+  
+
+  
+
+  
+
+            var tokens = raw  
+
+  
+
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)  
+
+  
+
+                .Select(s => s.Trim())  
+
+  
+
+                .Where(s => !string.IsNullOrWhiteSpace(s))  
+
+  
+
+                .ToList();  
+
+  
+
+  
+
+  
+
+            if (tokens.Count == 0)  
+
+  
+
+            {  
+
+  
+
+                Console.WriteLine("No values provided.");  
+
+  
+
+                return;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            int added = 0, skipped = 0;  
+
+  
+
+            foreach (var v in tokens)  
+
+  
+
+            {  
+
+  
+
+                bool exists = list.Any(x => string.Equals(x, v, StringComparison.OrdinalIgnoreCase));  
+
+  
+
+                if (exists)  
+
+  
+
+                {  
+
+  
+
+                    skipped++;  
+
+  
+
+                    continue;  
+
+  
+
+                }  
+
+  
+
+  
+
+  
+
+                list.Add(v);  
+
+  
+
+                added++;  
+
+  
+
+            }  
+
+  
+
+  
+
+  
+
+            Console.WriteLine($"Added {added} value(s) to '{key}'.{(skipped > 0 ? $" Skipped {skipped} duplicate(s)." : "")}");  
+
+  
+
+        }  
+
+  
+
+    }  
+
+    internal static class SectionD  
+
+    {  
+
+        public static void DisplayMenu(Dictionary<string, List<string>> dict)  
+
+        {  
+
+            Console.WriteLine("=== Section D: Display Dictionary Contents ===");  
+
+  
+
+            if (dict == null || dict.Count == 0)  
+
+            {  
+
+                Console.WriteLine("The dictionary is empty. Populate it first (option [1]).");  
+
+                return;  
+
+            }  
+
+  
+
+            Console.WriteLine("Choose display method:");  
+
+            Console.WriteLine("  [1] foreach over KeyValuePair<string, List<string>>");  
+
+            Console.WriteLine("  [2] foreach over Keys then index dict[key]");  
+
+            Console.WriteLine("  [3] Explicit enumerator (GetEnumerator)");  
+
+            Console.Write("Your choice: ");  
+
+  
+
+            var choice = Console.ReadLine();  
+
+            Console.WriteLine();  
+
+  
+
+            switch (choice)  
+
+            {  
+
+                case "1":  
+
+                    foreach (var kvp in dict)  
+
+                        PrintLine(kvp.Key, kvp.Value);  
+
+                    break;  
+
+                case "2":  
+
+                    foreach (var key in dict.Keys)  
+
+                        PrintLine(key, dict[key]);  
+
+                    break;  
+
+                case "3":  
+
+                    using (var enumerator = dict.GetEnumerator())  
+
+                    {  
+
+                        while (enumerator.MoveNext())  
+
+                        {  
+
+                            var kvp = enumerator.Current;  
+
+                            PrintLine(kvp.Key, kvp.Value);  
+
+                        }  
+
+                    }  
+
+                    break;  
+
+                default:  
+
+                    Console.WriteLine("Invalid option.");  
+
+                    break;  
+
+            }  
+
+        }  
+
+  
+
+        public static void ShowSortedKeys(Dictionary<string, List<string>> dict)  
+
+        {  
+
+            Console.WriteLine("=== Section D: Sorted Keys View ===");  
+
+  
+
+            if (dict == null || dict.Count == 0)  
+
+            {  
+
+                Console.WriteLine("The dictionary is empty. Populate it first (option [1]).");  
+
+                return;  
+
+            }  
+
+  
+
+            foreach (var key in dict.Keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))  
+
+                PrintLine(key, dict[key]);  
+
+        }  
+
+  
+
+        private static void PrintLine(string key, List<string> values)  
+
+        {  
+
+            var joined = values == null ? "" : string.Join(", ", values);  
+
+            Console.WriteLine($"Key: {key}  ->  Values: [{joined}]");  
+
+        }  
+
+    }  
+
+} 
