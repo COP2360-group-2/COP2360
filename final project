@@ -1,0 +1,353 @@
+using System; 
+
+  
+
+namespace ContractorProject 
+
+{ 
+
+    // ========================================== 
+
+    // Part 1: Contractor class (Completed by Jim) 
+
+    // ========================================== 
+
+    public class Contractor 
+
+    { 
+
+        // Stores the contractor's basic information 
+
+        private string contractorName; 
+
+        private int contractorNumber; 
+
+        private DateTime contractorStartDate; 
+
+  
+
+        // Sets default values if nothing is provided 
+
+        public Contractor() 
+
+        { 
+
+            contractorName = "Unknown"; 
+
+            contractorNumber = 0; 
+
+            contractorStartDate = DateTime.Now; 
+
+        } 
+
+  
+
+        // Creates a contractor using the given details 
+
+        public Contractor(string name, int number, DateTime startDate) 
+
+        { 
+
+            contractorName = name; 
+
+            contractorNumber = number; 
+
+            contractorStartDate = startDate; 
+
+        } 
+
+  
+
+        // Lets the program read and update the contractor's name 
+
+        public string ContractorName 
+
+        { 
+
+            get { return contractorName; } 
+
+            set { contractorName = value; } 
+
+        } 
+
+  
+
+        // Lets the program read and update the contractor's ID number 
+
+        public int ContractorNumber 
+
+        { 
+
+            get { return contractorNumber; } 
+
+            set { contractorNumber = value; } 
+
+        } 
+
+  
+
+        // Lets the program read and update the contractor's start date 
+
+        public DateTime ContractorStartDate 
+
+        { 
+
+            get { return contractorStartDate; } 
+
+            set { contractorStartDate = value; } 
+
+        } 
+
+  
+
+        // Shows all contractor information on the screen 
+
+        public virtual void DisplayInfo() 
+
+        { 
+
+            Console.WriteLine("Contractor Name: " + contractorName); 
+
+            Console.WriteLine("Contractor Number: " + contractorNumber); 
+
+            Console.WriteLine("Start Date: " + contractorStartDate.ToShortDateString()); 
+
+        } 
+
+    } 
+
+  
+
+    // ========================================== 
+
+    // Part 2: Subcontractor class (Completed by Eva) 
+
+    // ========================================== 
+
+    public class Subcontractor : Contractor 
+
+    { 
+
+        // Stores shift and hourly pay information 
+
+        private int shift;            // 1 = Day, 2 = Night 
+
+        private double hourlyPayRate; // pay per hour 
+
+  
+
+        // Default values if nothing is provided 
+
+        public Subcontractor() : base() 
+
+        { 
+
+            shift = 1;           // default to day shift 
+
+            hourlyPayRate = 0.0; 
+
+        } 
+
+  
+
+        // Creates a subcontractor with all details included 
+
+        public Subcontractor(string name, int number, DateTime startDate, 
+
+                             int shift, double hourlyPayRate) 
+
+            : base(name, number, startDate)  // calls Contractor constructor 
+
+        { 
+
+            this.shift = shift; 
+
+            this.hourlyPayRate = hourlyPayRate; 
+
+        } 
+
+  
+
+        // Allows the program to read and update the worker's shift 
+
+        public int Shift 
+
+        { 
+
+            get { return shift; } 
+
+            set { shift = value; } 
+
+        } 
+
+  
+
+        // Allows the program to read and update the hourly pay rate 
+
+        public double HourlyPayRate 
+
+        { 
+
+            get { return hourlyPayRate; } 
+
+            set { hourlyPayRate = value; } 
+
+        } 
+
+  
+
+        // ========================================== 
+
+        // Part 3: Pay computation (Completed by Lawrence) 
+
+        // ========================================== 
+
+        public float ComputePay(float hoursWorked) 
+
+        { 
+
+            if (hoursWorked <= 0) 
+
+            { 
+
+                return 0f; // safety check 
+
+            } 
+
+  
+
+            double totalPay = hourlyPayRate * hoursWorked; 
+
+  
+
+            // Night shift gets 3% more 
+
+            if (shift == 2) 
+
+            { 
+
+                totalPay *= 1.03; 
+
+            } 
+
+  
+
+            return (float)totalPay; 
+
+        } 
+
+  
+
+        // Shows all subcontractor information 
+
+        public override void DisplayInfo() 
+
+        { 
+
+            base.DisplayInfo(); 
+
+            Console.WriteLine("Shift: " + (shift == 1 ? "Day" : "Night")); 
+
+            Console.WriteLine("Hourly Pay Rate: $" + hourlyPayRate); 
+
+        } 
+
+    } 
+
+  
+
+    // ========================================== 
+
+    // Part 4: Main Program (Completed by Jim due to Cesars emergency) 
+
+    // ========================================== 
+
+    public class Program 
+
+    { 
+
+        public static void Main(string[] args) 
+
+        { 
+
+            Console.WriteLine("=== Subcontractor Pay Calculator ==="); 
+
+            Console.WriteLine(); 
+
+  
+
+            // Get basic subcontractor information from the user 
+
+            Console.Write("Enter contractor name: "); 
+
+            string name = Console.ReadLine(); 
+
+  
+
+            Console.Write("Enter contractor number (ID): "); 
+
+            int number = Convert.ToInt32(Console.ReadLine()); 
+
+  
+
+            Console.Write("Enter contractor start date (MM/DD/YYYY): "); 
+
+            DateTime startDate = Convert.ToDateTime(Console.ReadLine()); 
+
+  
+
+            Console.Write("Enter shift (1 = Day, 2 = Night): "); 
+
+            int shift = Convert.ToInt32(Console.ReadLine()); 
+
+  
+
+            Console.Write("Enter hourly pay rate: "); 
+
+            double hourlyRate = Convert.ToDouble(Console.ReadLine()); 
+
+  
+
+            Console.Write("Enter hours worked: "); 
+
+            float hoursWorked = float.Parse(Console.ReadLine()); 
+
+  
+
+            // Create a Subcontractor object using the details entered 
+
+            Subcontractor worker = new Subcontractor(name, number, startDate, shift, hourlyRate); 
+
+  
+
+            Console.WriteLine(); 
+
+            Console.WriteLine("=== Subcontractor Details ==="); 
+
+            worker.DisplayInfo(); 
+
+  
+
+            // Compute and display total pay 
+
+            float totalPay = worker.ComputePay(hoursWorked); 
+
+  
+
+            Console.WriteLine("Hours Worked: " + hoursWorked); 
+
+            Console.WriteLine("Total Pay: $" + totalPay); 
+
+  
+
+            Console.WriteLine(); 
+
+            Console.WriteLine("Press any key to exit..."); 
+
+            Console.ReadKey(); 
+
+        } 
+
+    } 
+
+} 
